@@ -1,0 +1,71 @@
+# Production environment specific values
+app:
+  name: APP_NAME-prd
+
+# Image configuration for production
+image:
+  tag: "latest"
+
+# Production ready resources
+replicaCount: 3
+
+resources:
+  limits:
+    cpu: 1000m
+    memory: 1Gi
+  requests:
+    cpu: 200m
+    memory: 256Mi
+
+# Ingress for production
+ingress:
+  hosts:
+    - host: APP_NAME.DOMAIN
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: APP_NAME-prd-tls
+      hosts:
+        - APP_NAME.DOMAIN
+
+# Production environment variables
+env:
+  - name: ENVIRONMENT
+    value: "production"
+  - name: LOG_LEVEL
+    value: "warn"
+  - name: DATABASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: APP_NAME-prd-secrets
+        key: database-url
+
+# Enable autoscaling in production
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 70
+
+# Production ConfigMap
+configMap:
+  data:
+    app.properties: |
+      server.port=8080
+      management.endpoints.web.exposure.include=health,info,metrics
+      logging.level.com.company=WARN
+
+# Production affinity - spread across nodes
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 100
+      podAffinityTerm:
+        labelSelector:
+          matchExpressions:
+          - key: app.kubernetes.io/name
+            operator: In
+            values:
+            - APP_NAME
+        topologyKey: kubernetes.io/hostname

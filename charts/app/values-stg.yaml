@@ -1,0 +1,54 @@
+# Staging environment specific values
+app:
+  name: APP_NAME-stg
+
+# Image configuration for staging
+image:
+  tag: "staging"
+
+# Reduced resources for staging
+replicaCount: 1
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+# Ingress for staging
+ingress:
+  hosts:
+    - host: APP_NAME-stg.DOMAIN
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: APP_NAME-stg-tls
+      hosts:
+        - APP_NAME-stg.DOMAIN
+
+# Staging environment variables
+env:
+  - name: ENVIRONMENT
+    value: "staging"
+  - name: LOG_level
+    value: "debug"
+  - name: DATABASE_URL
+    valueFrom:
+      secretKeyRef:
+        name: APP_NAME-stg-secrets
+        key: database-url
+
+# Disable autoscaling in staging
+autoscaling:
+  enabled: false
+
+# ConfigMap for staging
+configMap:
+  data:
+    app.properties: |
+      server.port=8080
+      management.endpoints.web.exposure.include=health,info,metrics,env
+      logging.level.com.company=DEBUG
