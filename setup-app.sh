@@ -30,10 +30,11 @@ ESCAPED_IMAGE_REPO=$(echo "$IMAGE_REPO" | sed 's/[[\.*^$()+?{|]/\\&/g')
 # Substituir variáveis nos arquivos
 echo "Substituindo variáveis nos arquivos..."
 
+# IMPORTANTE: Substituir IMAGE_REPOSITORY_TAG antes de IMAGE_REPOSITORY para evitar conflitos
+find . -type f \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i "s/IMAGE_REPOSITORY_TAG/$IMAGE_TAG/g" {} \;
 find . -type f \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i "s/APP_NAME/$APP_NAME/g" {} \;
 find . -type f \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i "s|REPO_URL|$ESCAPED_REPO_URL|g" {} \;
 find . -type f \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i "s|IMAGE_REPOSITORY|$ESCAPED_IMAGE_REPO|g" {} \;
-find . -type f \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i "s/IMAGE_REPOSITORY_TAG/$IMAGE_TAG/g" {} \;
 find . -type f \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i "s/DOMAIN/$DOMAIN/g" {} \;
 
 echo "Configuração concluída!"
