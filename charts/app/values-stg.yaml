@@ -24,22 +24,22 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
-  tls:
-    - secretName: APP_NAME-stg-tls
-      hosts:
-        - APP_NAME-stg.DOMAIN
+  #tls:
+  #  - secretName: APP_NAME-stg-tls
+  #    hosts:
+  #      - APP_NAME-stg.DOMAIN
 
 # Staging environment variables
 env:
-  - name: ENVIRONMENT
-    value: "staging"
-  - name: LOG_level
-    value: "debug"
-  - name: DATABASE_URL
-    valueFrom:
-      secretKeyRef:
-        name: APP_NAME-stg-secrets
-        key: database-url
+  #- name: ENVIRONMENT
+  #  value: "staging"
+  #- name: LOG_level
+  #  value: "debug"
+  #- name: DATABASE_URL
+  #  valueFrom:
+  #    secretKeyRef:
+  #      name: APP_NAME-stg-secrets
+  #      key: database-url
 
 # Disable autoscaling in staging
 autoscaling:
