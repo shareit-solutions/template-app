@@ -4,7 +4,7 @@ app:
 
 # Image configuration for production
 image:
-  tag: "latest"
+  tag: IMAGE_REPOSITORY_TAG
 
 # Production ready resources
 replicaCount: 3

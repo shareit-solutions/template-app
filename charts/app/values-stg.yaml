@@ -4,7 +4,7 @@ app:
 
 # Image configuration for staging
 image:
-  tag: "staging"
+  tag: IMAGE_REPOSITORY_TAG
 
 # Reduced resources for staging
 replicaCount: 1
