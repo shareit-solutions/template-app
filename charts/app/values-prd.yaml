@@ -44,7 +44,7 @@ env:
 # Enable autoscaling in production
 autoscaling:
   enabled: true
-  minReplicas: 3
+  minReplicas: 1
   maxReplicas: 10
   targetCPUUtilizationPercentage: 70
 
