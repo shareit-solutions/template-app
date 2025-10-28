@@ -41,6 +41,23 @@ find . -type f \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i "s|IMAGE_REPOS
 find . -type f \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i "s/DOMAIN/$DOMAIN/g" {} \;
 find . -type f \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i "s/APP_PORT/$APP_PORT/g" {} \;
 
+# Substituir variáveis no Dockerfile
+if [ -f "Dockerfile" ]; then
+    sed -i "s/APP_NAME/$APP_NAME/g" Dockerfile
+    sed -i "s/APP_PORT/$APP_PORT/g" Dockerfile
+fi
+
+# Substituir variáveis no package.json
+if [ -f "package.json" ]; then
+    sed -i "s/APP_NAME/$APP_NAME/g" package.json
+fi
+
+# Substituir variáveis no index.js
+if [ -f "index.js" ]; then
+    sed -i "s/APP_NAME/$APP_NAME/g" index.js
+    sed -i "s/APP_PORT/$APP_PORT/g" index.js
+fi
+
 echo "Configuração concluída!"
 echo ""
 echo "Próximos passos:"

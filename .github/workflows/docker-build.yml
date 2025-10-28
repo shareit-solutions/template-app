@@ -1,0 +1,20 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+
+jobs:
+  build-and-push:
+    uses: shareit-solutions/reusable-workflows/.github/workflows/docker-build-push.yml@main
+    with:
+      image_name: ${{ github.repository }}
+      dockerfile_path: ./Dockerfile
+      context_path: .
+      runner: tools
+      push_image: true
+    secrets:
+      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+      dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
