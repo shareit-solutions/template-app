@@ -2,10 +2,6 @@
 app:
   name: APP_NAME-stg
 
-# Image configuration for staging
-image:
-  tag: IMAGE_REPOSITORY_TAG
-
 # Reduced resources for staging
 replicaCount: 1
 

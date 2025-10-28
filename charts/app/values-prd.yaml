@@ -2,10 +2,6 @@
 app:
   name: APP_NAME-prd
 
-# Image configuration for production
-image:
-  tag: IMAGE_REPOSITORY_TAG
-
 # Production ready resources
 replicaCount: 1
 
