@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: APP_NAME-stg
+  name: test-stg
   namespace: argocd
   labels:
-    app: APP_NAME
+    app: test
     environment: staging
   annotations:
     argocd.argoproj.io/sync-wave: "1"
@@ -15,7 +15,7 @@ spec:
   
   # Source configuration
   source:
-    repoURL: REPO_URL
+    repoURL: git@github.com:shareit-solutions/test
     targetRevision: develop  # Use develop branch for staging
     path: charts/app
     helm:
@@ -24,14 +24,12 @@ spec:
         - values-stg.yaml
       parameters:
         - name: app.name
-          value: APP_NAME-stg
-        - name: image.tag
-          value: staging
+          value: test-stg
   
   # Destination configuration
   destination:
     server: https://kubernetes.default.svc
-    namespace: APP_NAME-stg
+    namespace: test-stg
   
   # Sync policy
   syncPolicy:

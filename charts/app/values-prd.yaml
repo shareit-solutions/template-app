@@ -1,6 +1,6 @@
 # Production environment specific values
 app:
-  name: APP_NAME-prd
+  name: test-prd
 
 # Production ready resources
 replicaCount: 1
@@ -16,14 +16,14 @@ resources:
 # Ingress for production
 ingress:
   hosts:
-    - host: APP_NAME.DOMAIN
+    - host: test.brisa.tech
       paths:
         - path: /
           pathType: Prefix
   #tls:
-  #  - secretName: APP_NAME-prd-tls
+  #  - secretName: test-prd-tls
   #    hosts:
-  #      - APP_NAME.DOMAIN
+  #      - test.brisa.tech
 
 # Production environment variables
 env:
@@ -34,7 +34,7 @@ env:
   #- name: DATABASE_URL
   #  valueFrom:
   #    secretKeyRef:
-  #      name: APP_NAME-prd-secrets
+  #      name: test-prd-secrets
   #      key: database-url
 
 # Enable autoscaling in production
@@ -48,7 +48,7 @@ autoscaling:
 configMap:
   data:
     app.properties: |
-      server.port=APP_PORT
+      server.port=3000
       management.endpoints.web.exposure.include=health,info,metrics
       logging.level.com.company=WARN
 
@@ -63,5 +63,5 @@ affinity:
           - key: app.kubernetes.io/name
             operator: In
             values:
-            - APP_NAME
+            - test
         topologyKey: kubernetes.io/hostname

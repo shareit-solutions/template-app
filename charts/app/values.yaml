@@ -3,14 +3,14 @@
 
 # Application configuration
 app:
-  name: APP_NAME
+  name: test
   version: "1.0.0"
 
 # Image configuration
 image:
-  repository: IMAGE_REPOSITORY
+  repository: grafana/grafana
   pullPolicy: IfNotPresent
-  tag: IMAGE_REPOSITORY_TAG
+  tag: 12.2.0
 
 # Deployment configuration
 replicaCount: 1
@@ -19,7 +19,7 @@ replicaCount: 1
 service:
   type: ClusterIP
   port: 80
-  targetPort: APP_PORT
+  targetPort: 3000
 
 # Ingress configuration
 ingress:
@@ -29,14 +29,14 @@ ingress:
     cert-manager.io/cluster-issuer: "letsencrypt-prod"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
   hosts:
-    - host: APP_NAME.DOMAIN
+    - host: test.brisa.tech
       paths:
         - path: /
           pathType: Prefix
   tls:
-    - secretName: APP_NAME-tls
+    - secretName: test-tls
       hosts:
-        - APP_NAME.DOMAIN
+        - test.brisa.tech
 
 # Resource limits
 resources:
@@ -60,13 +60,13 @@ healthcheck:
   livenessProbe:
     httpGet:
       path: /health
-      port: APP_PORT
+      port: 3000
     initialDelaySeconds: 30
     periodSeconds: 10
   readinessProbe:
     httpGet:
       path: /ready
-      port: APP_PORT
+      port: 3000
     initialDelaySeconds: 5
     periodSeconds: 5
 
@@ -82,7 +82,7 @@ configMap:
   enabled: true
   data:
     app.properties: |
-      server.port=APP_PORT
+      server.port=3000
       management.endpoints.web.exposure.include=health,info,metrics
 
 # Secret data (base64 encoded values will be created)

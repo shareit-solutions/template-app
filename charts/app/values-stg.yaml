@@ -1,6 +1,6 @@
 # Staging environment specific values
 app:
-  name: APP_NAME-stg
+  name: test-stg
 
 # Reduced resources for staging
 replicaCount: 1
@@ -16,14 +16,14 @@ resources:
 # Ingress for staging
 ingress:
   hosts:
-    - host: APP_NAME-stg.DOMAIN
+    - host: test-stg.brisa.tech
       paths:
         - path: /
           pathType: Prefix
   #tls:
-  #  - secretName: APP_NAME-stg-tls
+  #  - secretName: test-stg-tls
   #    hosts:
-  #      - APP_NAME-stg.DOMAIN
+  #      - test-stg.brisa.tech
 
 # Staging environment variables
 env:
@@ -34,7 +34,7 @@ env:
   #- name: DATABASE_URL
   #  valueFrom:
   #    secretKeyRef:
-  #      name: APP_NAME-stg-secrets
+  #      name: test-stg-secrets
   #      key: database-url
 
 # Disable autoscaling in staging
@@ -45,6 +45,6 @@ autoscaling:
 configMap:
   data:
     app.properties: |
-      server.port=APP_PORT
+      server.port=3000
       management.endpoints.web.exposure.include=health,info,metrics,env
       logging.level.com.company=DEBUG
