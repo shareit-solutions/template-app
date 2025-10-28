@@ -1,10 +1,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: test-prd
+  name: APP_NAME-prd
   namespace: argocd
   labels:
-    app: test
+    app: APP_NAME
     environment: production
   annotations:
     argocd.argoproj.io/sync-wave: "2"
@@ -15,7 +15,7 @@ spec:
   
   # Source configuration
   source:
-    repoURL: git@github.com:shareit-solutions/test
+    repoURL: REPO_URL
     targetRevision: main  # Use main branch for production
     path: charts/app
     helm:
@@ -24,12 +24,12 @@ spec:
         - values-prd.yaml
       parameters:
         - name: app.name
-          value: test-prd
+          value: APP_NAME-prd
   
   # Destination configuration
   destination:
     server: https://kubernetes.default.svc
-    namespace: test-prd
+    namespace: APP_NAME-prd
   
   # Sync policy - manual sync for production
   syncPolicy:
