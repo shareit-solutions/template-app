@@ -1,13 +1,14 @@
 #!/bin/bash
 
 # Script para configurar uma nova aplicação usando este template
-# Uso: ./setup-app.sh <app-name> <repo-url> <image-repo> <image-tag> <domain>
+# Uso: ./setup-app.sh <app-name> <repo-url> <image-repo> <image-tag> <domain> <app-port>
 
 set -e
 
-if [ $# -ne 5 ]; then
-    echo "Uso: $0 <app-name> <repo-url> <image-repo> <image-tag> <domain>"
-    echo "Exemplo: $0 minha-app https://github.com/user/repo.git myregistry/myapp latest example.com"
+if [ $# -lt 5 ] || [ $# -gt 6 ]; then
+    echo "Uso: $0 <app-name> <repo-url> <image-repo> <image-tag> <domain> [app-port]"
+    echo "Exemplo: $0 minha-app https://github.com/user/repo.git myregistry/myapp latest example.com 8080"
+    echo "Nota: app-port é opcional e usa 8080 como padrão"
     exit 1
 fi
 
@@ -16,12 +17,14 @@ REPO_URL=$2
 IMAGE_REPO=$3
 IMAGE_TAG=$4
 DOMAIN=$5
+APP_PORT=${6:-8080}
 
 echo "Configurando aplicação: $APP_NAME"
 echo "Repositório: $REPO_URL"
 echo "Imagem: $IMAGE_REPO"
 echo "Tag da imagem: $IMAGE_TAG"
 echo "Domínio: $DOMAIN"
+echo "Porta da aplicação: $APP_PORT"
 
 # Escapar caracteres especiais para sed
 ESCAPED_REPO_URL=$(echo "$REPO_URL" | sed 's/[[\.*^$()+?{|]/\\&/g')
@@ -36,6 +39,7 @@ find . -type f \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i "s/APP_NAME/$A
 find . -type f \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i "s|REPO_URL|$ESCAPED_REPO_URL|g" {} \;
 find . -type f \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i "s|IMAGE_REPOSITORY|$ESCAPED_IMAGE_REPO|g" {} \;
 find . -type f \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i "s/DOMAIN/$DOMAIN/g" {} \;
+find . -type f \( -name "*.yaml" -o -name "*.yml" \) -exec sed -i "s/APP_PORT/$APP_PORT/g" {} \;
 
 echo "Configuração concluída!"
 echo ""

@@ -49,6 +49,6 @@ autoscaling:
 configMap:
   data:
     app.properties: |
-      server.port=8080
+      server.port=APP_PORT
       management.endpoints.web.exposure.include=health,info,metrics,env
       logging.level.com.company=DEBUG
