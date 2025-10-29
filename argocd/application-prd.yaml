@@ -28,7 +28,7 @@ spec:
   
   # Destination configuration
   destination:
-    server: https://kubernetes.default.svc
+    server: argocd-staging
     namespace: APP_NAME-prd
   
   # Sync policy - manual sync for production
