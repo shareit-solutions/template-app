@@ -44,7 +44,7 @@ jobs:
   update-image-tag:
     needs: build-and-push
     runs-on: tools
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
     steps:
       - name: Update image tag in Helm values
         run: |
