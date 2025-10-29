@@ -12,7 +12,7 @@ on:
       - 'cmd/**'
  
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
@@ -57,10 +57,11 @@ jobs:
             sed -i "s|tag: .*|tag: ${IMAGE_TAG}|g" ./charts/app/values-stg.yaml
           fi
         
-      - name: Commit and push changes
+      - name: Commit and push updated values
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add ./charts/app/values-stg.yaml ./charts/app/values-prd.yaml
           git commit -m "Update Docker image tag to ${IMAGE_TAG} [skip ci]" || echo "No changes to commit"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           git push origin HEAD:main
