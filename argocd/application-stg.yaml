@@ -28,7 +28,7 @@ spec:
   
   # Destination configuration
   destination:
-    server: https://kubernetes.default.svc
+    server: CLUSTER_DESTINATION
     namespace: APP_NAME-stg
   
   # Sync policy
