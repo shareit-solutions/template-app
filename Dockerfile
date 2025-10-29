@@ -4,7 +4,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 COPY . .
 RUN go build -o app ./cmd/app
-FROM alpine:latest
+FROM ubuntu:latest
 WORKDIR /root/
 COPY --from=builder /app/app .
 EXPOSE 8080
