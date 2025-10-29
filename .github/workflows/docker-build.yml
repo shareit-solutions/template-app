@@ -5,16 +5,37 @@ on:
     branches:
       - develop
       - main
+    paths:
+      - 'Dockerfile'
+      - '.github/workflows/docker-build.yml'
+      - 'app/**'
+      - 'cmd/**'
+ 
+permissions:
+  contents: read
+  packages: write
 
 jobs:
+  prepare-env:
+    runs-on: tools
+    outputs:
+      DOCKERHUB_USERNAME: ${{ steps.load-env.outputs.username }}
+      DOCKERHUB_PASSWORD: ${{ steps.load-env.outputs.password }}
+    steps:
+      - id: load-env
+        run: |
+          source /etc/profile.d/github.sh
+          echo "username=$DOCKERHUB_USERNAME" >> $GITHUB_OUTPUT
+          echo "password=$DOCKERHUB_PASSWORD" >> $GITHUB_OUTPUT
+
   build-and-push:
-    uses: shareit-solutions/reusable-workflows/.github/workflows/docker-build-push.yml@main
+    needs: prepare-env
+    uses: shareit-solutions/reusable-workflows/.github/workflows/docker-build.yml@main
     with:
       image_name: ${{ github.repository }}
       dockerfile_path: ./Dockerfile
       context_path: .
-      runner: tools
       push_image: true
-    secrets:
-      dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
-      dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
+      dockerhub_username: ${{ needs.prepare-env.outputs.DOCKERHUB_USERNAME }}
+      dockerhub_password: ${{ needs.prepare-env.outputs.DOCKERHUB_PASSWORD }}
+    secrets: inherit
