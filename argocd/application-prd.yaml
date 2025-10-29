@@ -28,7 +28,7 @@ spec:
   
   # Destination configuration
   destination:
-    server: CLUSTER_DESTINATION
+    name: CLUSTER_DESTINATION
     namespace: APP_NAME-prd
   
   # Sync policy - manual sync for production
